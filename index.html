@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <script src="index.js"></script>
+    <title>Proyecto POO</title>
+  </head>
+  <body>
+    <h1 class="m-3">Listado de cantantes</h1>
+    <div id="App" class="container m-3 p-3">
+      <div class="form-group">
+        <label for="numero">Agrega un numero</label>
+        <input type="text" id="numero" />
+      </div>
+      <div class="form-group">
+        <label for="txtID">ID:</label>
+        <input type="text" id="txtID" />
+      </div>
+      <div class="form-group">
+        <label for="txtNombre">Nombre:</label>
+        <input type="text" id="txtNombre" />
+      </div>
+      <div class="form-group">
+        <label for="txtBanda">Banda:</label>
+        <input type="text" id="txtBanda" />
+      </div>
+      <div class="form-group">
+        <label for="txtEdad">Edad:</label>
+        <input type="number" id="txtEdad" />
+      </div>
+      <div class="form-group">
+        <label for="txtGenero">Genero que canta:</label>
+        <input type="text" id="txtGenero" />
+      </div>
+      <div class="form-group">
+        <button id="btnAgregar" class="btn btn-success" type="button">Agregar</button>
+        <button id="btnRecuperar" class="btn btn-info" type="button">Recupera</button>
+        <button id="btnEliminar" class="btn btn-info" type="button">Eliminar</button>
+      </div>
+    </div>
+    <div id="details"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
