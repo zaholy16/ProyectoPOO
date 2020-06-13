@@ -1,74 +1,47 @@
-const btnAgregar = document.getElementById("btnAgregar");
+const btnRecupera = document.getElementById("btnRecuperar");
+btnRecupera.addEventListener("click",(e)=>{
 
-btnAgregar.addEventListener("click", c => {
+  var solicitud = new XMLHttpRequest();
+  solicitud.open('GET', 'http://localhost:3000/artista/', true);
+  solicitud.onload = function()
+  {
+    var resultado = document.getElementById("details");
+    let datos = JSON.parse(this.response);
+    if(solicitud.status >= 200 && solicitud.status < 400)
+    {
+        resultado.innerHTML += "<p>" +this.response + "</p>";
+    }
+    else
+    {
+        console.log("ERROR");
+        resultado.innerHTML += "ERROR EN LA LLAMADA A LA API";
+    }
+  }
+  solicitud.send();
+});
 
-  let numero = parseInt(document.getElementById("numero").value);
-  var requestt = new XMLHttpRequest();
-  requestt.open("POST", "http://localhost:3000/cantantes/", true);
-  requestt.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+const btnAgrega = document.getElementById("btnAgregar");
+btnAgrega.addEventListener("click",(e) =>{
 
-  requestt.onreadystatechange = function() 
+  var nombre = document.getElementById("nombre").value;
+  var edad = parseInt(document.getElementById("edad").value);
+  var sexo = document.getElementById("sexo").value;
+  var banda = document.getElementById("banda").value;
+  var genero = document.getElementById("genero").value;
+
+  var xhttR = new XMLHttpRequest();
+  xhttR.open('POST', 'http://localhost:3000/artista/', true);
+  xhttR.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+  xhttR.onreadystatechange = function()
   {
     if(this.readyState === XMLHttpRequest.DONE && this.status === 200)
     {
-      let detalles = document.getElementById("details");
-      detalles.innerHTML += `
-        <div>
-          <p><strong>ID: ${this.response} </p>
-        </div>`;
+      var resultadoA = document.getElementById("details");
+      details.innerHTML +=  ` 
+        <p>${this.response}</p>
+      `;
     }
   }
-  requestt.send("cantante=numero" + numero);
-
-});
-
-  /*let id = parseInt(document.getElementById("txtID").value);
-  let nombre = document.getElementById("txtNombre").value;
-  let banda = document.getElementById("txtBanda").value;
-  let edad = parseInt(document.getElementById("txtEdad").value);
-  let genero = document.getElementById("txtGenero").value; 
-
-  let artista = new Producto(id,nombre, banda, edad, genero);
-
-  let details = document.getElementById("details");
-  details.innerHTML += `
-    <div class="card text-white bg-dark m-3" style="max-width: 18rem;">
-      <div class="card-header"><strong>ID: ${artista.id}</strong></div>
-      <div class="card-body">
-        <p class="card-title">Nombre: ${artista.nombre}</p>
-        <p class="card-title">Banda: ${artista.banda}</p>
-        <p class="card-text">Edad: ${artista.edad}</p>
-        <p class="card-text">Genero: ${artista.genero}</p>
-        <p class="card-text">${product.showTextInfo()}</p>
-    </div>
-    `;
-  
-  MiInfo.agregar(cantante);
-  console.log(MiInfo.listar());
-  console.log(cantante.showInfo());
-}); */
-
-const btnRecuperar = document.getElementById("btnRecuperar");
-btnRecuperar.addEventListener("click", e => 
-{
-  var request = new XMLHttpRequest();
-  request.open("GET", "http://localhost:3000/cantantes/", true);
-
-  request.onload = function() 
-  {
-    let dato = JSON.parse(this.response);
-    let detalles = document.getElementById("details");
-    if (request.status >= 200 && request.status <= 400) 
-    {
-      detalles.innerHTML += "<div><p>" + this.response + "</p></div>"
-    } 
-    else 
-    {
-      console.log("ERROR");
-      detalles.innerHTML += "Error en la llamada a API"
-    }
-  }
-
-  request.send();
-
+  xhttR.send("Nombre = " + nombre , "Edad = " + edad , "Sexo = " + sexo , "Banda = " + banda , "Genero = " + genero);
 });
