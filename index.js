@@ -3,7 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-var artista = [2,5,7,3,2,6,4];
+const Estructura = require("./modelos/estructura");
+const Artista = require("./modelos/artista");
+var miInfo = new Estructura();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -12,116 +14,62 @@ app.listen(3000,() =>{
     console.log("Puerto 3000 funcionando!!!")
 });
 
-app.get("/", cors(), (req, res) => {
+app.get("/artista/", cors(), (req,res) => {
     respuesta = {
-        error: true,
-        codigo: 200,
-        mensaje: "Bienvenido, todo correcto"
-    };
+        Tipo: "Exito",
+        Estatus: 200,
+        Mensaje: "Bienvenido",
+        miInfo
+    }
     res.send(respuesta);
 });
-app.get("/cantantes/:datos?", cors(), (req,res) => {
-    var d = req.params.datos;
-    if(d)
-    {
-        var encontrado=-1;
-        var i=0;
-        while(i<artista.length && encontrado==-1)
-        {
-            if(artista[i]==parseInt(id))
-                encontrado=i;
-            i++;
-        }
 
-        if(encontrado==-1)
-        {
-            respuesta = {
-                Tipo: "Error",
-                Estatus: 500,
-                mensaje: "No existe"
-            }
-            res.send(respuesta);
-        }
-        else
-        {
-            respuesta = {
-                Tipo: "Exito",
-                Estatus: 200,
-                mensaje: "Encontrado en la posicion: " +  encontrado,
-                d:artista
-            }
-            res.send(respuesta);
-        }
-    }
-    else
-    {
-        if(!artista)
-        {
-            respuesta = {
-                Tipo: "Error",
-                Estatus: 500,
-                mensaje: "No existe"
-            }
-            res.send(respuesta);
-        }
-        else
-        {
-            respuesta = {
-                Estatus: 200,
-                d:artista
-            }
-            res.send(respuesta);
-        }
-    }
-});
-
-app.post("/cantantes/", cors(), (req,res) => {
-    if(!req.body.numero)
+app.post("/artista/", cors(), (req,res) => {
+    if(!req.body.nombre || !req.body.edad ||!req.body.sexo ||!req.body.banda || !req.body.generoM)
     {
         respuesta = {
-            Tipo: "Error",
-            Estatus: 500,
-            mensaje: "Datos incompletos",
+            Tipo: "ERROR",
+            Estatus: 404,
+            Mensaje: "Faltan Datos :C",
         }
         res.send(respuesta);
     }
-    else
+    else if(req.body.nombre)
     {
-        var datos=parseInt(req.body.numero);
-        var encontrado=-1;
+        let nombre = (req.body.nombre);
+        let busca=-1;
         var i=0;
-        while(i<artista.length && encontrado==-1)
+
+        while(i<miInfo.miInfo.length)
         {
-            if(artista[i]==parseInt(datos))
-                encontrado=i;
+            if(nombre===miInfo.miInfo[i].nombre)
+            busca=i;
             i++;
         }
-
-        if(encontrado==-1)
+        
+        if(busca!=-1)
         {
-            artista.push(datos);
             respuesta = {
                 Tipo: "Exito",
                 Estatus: 200,
-                mensaje: "Agregado exitosamente!!",
-                datos:artista
+                Mensaje: "Ya existe un registro con ese nombre :C",
+                miInfo
             }
             res.send(respuesta);
         }
         else
         {
-            respuesta = {
-                Tipo: "Error",
-                Estatus: 500,
-                mensaje: "El dato ya existe"
-            }
-            res.send(respuesta);
+            let artista = new Artista()
+            artista = req.body;
+            miInfo.agregar(artista);
+            res.status(200).send({mensaje: "Artista agregado correctamente :D"});
+            miInfo
         }
     }
 });
 
-app.delete("/cantantes/:datos?", (req,res) => {
-    if(!req.body.cantante || !req.body.numero)
+app.delete("/artista/:nombre?", (req,res) => {
+    if(req.body.nombre)
     {
         respuesta = {
             Tipo: "Error",
